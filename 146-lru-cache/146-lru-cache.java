@@ -25,11 +25,7 @@ class LRUCache {
         this.capacity=capacity;
         currentSize=0;
     }
-    
-    public int get(int key) {
-        if(map.get(key)==null)
-            return -1;
-        ListNode currentNode = map.get(key);
+    public static void move(ListNode currentNode){
         ListNode temp=currentNode.next;
         temp.prev=currentNode.prev;
         currentNode.prev.next=temp;
@@ -37,6 +33,22 @@ class LRUCache {
         currentNode.next.prev=currentNode;
         head.next=currentNode;
         currentNode.prev=head;
+    }
+    public static void insert(ListNode newNode){
+        head.next.prev=newNode;
+        newNode.next=head.next;
+        newNode.prev=head;
+        head.next=newNode;
+    }
+    public static void remove(){
+        tail.prev.prev.next=tail;
+        tail.prev=tail.prev.prev;
+    }
+    public int get(int key) {
+        if(map.get(key)==null)
+            return -1;
+        ListNode currentNode = map.get(key);
+        move(currentNode);
         return currentNode.value;
     }
     
@@ -44,13 +56,7 @@ class LRUCache {
         if(map.get(key)!=null){
             ListNode currentNode=map.get(key);
             currentNode.value=value;
-            ListNode temp=currentNode.next;
-            temp.prev=currentNode.prev;
-            currentNode.prev.next=temp;
-            currentNode.next=head.next;
-            currentNode.next.prev=currentNode;
-            head.next=currentNode;
-            currentNode.prev=head;
+            move(currentNode);
         }
         else{
             ListNode newNode=new ListNode(key, value);
@@ -60,13 +66,9 @@ class LRUCache {
             }
             else{
                 map.remove(tail.prev.key);
-                tail.prev.prev.next=tail;
-                tail.prev=tail.prev.prev;
+                remove();
             }
-            head.next.prev=newNode;
-            newNode.next=head.next;
-            newNode.prev=head;
-            head.next=newNode;
+            insert(newNode);
             map.put(key, newNode);
         }
         
