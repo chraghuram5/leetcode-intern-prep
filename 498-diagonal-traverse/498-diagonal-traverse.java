@@ -6,21 +6,19 @@ class Solution {
         int idx=0;
         for(int k=0;k<=(m+n-2);k++){
             if(k%2==0){
-                int i=k;
-                int j=0;
-                while(i>=0 && j<=k){
-                    if(i<m && j<n)
-                        answer[idx++]=mat[i][j];
+                int i=Math.min(k,m-1);
+                int j=k-i;
+                while(i>=0 && j<n){
+                    answer[idx++]=mat[i][j];
                     i--;
                     j++;
                 }
             }
             else{
-                int i=0;
-                int j=k;
-                while(j>=0 && i<=k){
-                    if(i<m && j<n)
-                        answer[idx++]=mat[i][j];
+                int j=Math.min(k,n-1);
+                int i=k-j;
+                while(j>=0 && i<m){
+                    answer[idx++]=mat[i][j];
                     i++;
                     j--;
                 }
