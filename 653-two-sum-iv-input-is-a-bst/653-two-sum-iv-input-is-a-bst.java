@@ -14,25 +14,29 @@
  * }
  */
 class Solution {
-    public boolean search(TreeNode root, int k, TreeNode current){
+    public boolean find(TreeNode root, int k, HashMap<Integer, HashSet<TreeNode>> map){
         if(root==null)
             return false;
-        if(root.val==k && root!=current)
-            return true;
-        if(k<root.val)
-            return search(root.left, k, current);
-        else
-            return search(root.right, k, current);
+        if(map.containsKey(k-root.val)){
+            HashSet<TreeNode> set=map.get(k-root.val);
+            if(!set.contains(root))
+                return true;
+        }
+        if(map.get(root.val)==null){
+            HashSet<TreeNode> set=new HashSet<TreeNode>();
+            set.add(root);
+            map.put(root.val, set);
+        }
+        else{
+            HashSet<TreeNode> set=map.get(root.val);
+            set.add(root);
+            map.put(root.val, set);
+        }
+        return find(root.left, k, map)||find(root.right, k, map);
     }
     
-    public boolean traverse(TreeNode current, int k, TreeNode root){
-        if(current==null)
-            return false; 
-        if(search(root, k-current.val, current))
-            return true;
-        return traverse(current.left, k, root)||traverse(current.right, k, root);
-    }
     public boolean findTarget(TreeNode root, int k) {
-        return traverse(root, k, root);
+        HashMap<Integer, HashSet<TreeNode>> map=new HashMap<Integer, HashSet<TreeNode>>();
+        return find(root, k, map);
     }
 }
