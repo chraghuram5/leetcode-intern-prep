@@ -12,7 +12,7 @@ pipeline {
       
       steps {
         echo 'building the application...'
-        echo 'credentials ${TEST_CREDENTIALS}'
+        echo "credentials ${TEST_CREDENTIALS}"
       }
     }
     
