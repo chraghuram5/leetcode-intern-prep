@@ -2,12 +2,17 @@ pipeline {
   
   agent any
   
+  environment {
+    TEST_CREDENTIALS = credentials('pipeline-id')
+  }
+  
   stages {
     
     stage("build") {
       
       steps {
         echo 'building the application...'
+        echo "credentials ${TEST_CREDENTIALS}"
       }
     }
     
@@ -26,6 +31,11 @@ pipeline {
       
       steps {
         echo 'deploying the applications'
+        withCredentials([
+          usernameColonPassword(credentials: 'pipeline-id', usernameVariable: 'USER', passwordVariable: 'PWD')
+        ]) {
+          sh "some script ${USER} ${PWD}"
+        }
       }
     }
   }
