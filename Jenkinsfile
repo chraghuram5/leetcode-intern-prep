@@ -32,7 +32,7 @@ pipeline {
       steps {
         echo 'deploying the applications'
         withCredentials([
-          usernamePassword(credentials: 'pipeline-id', usernameVariable: 'USER', passwordVariable: 'PWD')
+          usernameColonPassword(credentials: 'pipeline-id', usernameVariable: 'USER', passwordVariable: 'PWD')
         ]) {
           sh "some script ${USER} ${PWD}"
         }
